@@ -1,10 +1,12 @@
-﻿using ActReport.Core.Entities;
+﻿using ActReport.Core.Contracts;
+using ActReport.Core.Entities;
 using ActReport.Persistence;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using System.Windows.Input;
 
 namespace ActReport.ViewModel
 {
@@ -14,6 +16,7 @@ namespace ActReport.ViewModel
         private string _lastname;
         private Employee _selectEmployee;
         private ObservableCollection<Employee> _employees;
+        private ICommand _cmdSaveChanges;
 
         public string FirstName
         {
@@ -56,10 +59,10 @@ namespace ActReport.ViewModel
         }
         public EmployeeViewModel()
         {
-            LoadEmployee();
+            LoadEmployees();
         }
 
-        private void LoadEmployee()
+        private void LoadEmployees()
         {
             using (UnitOfWork uow = new UnitOfWork())
             {
@@ -71,6 +74,30 @@ namespace ActReport.ViewModel
 
                 Employees = new ObservableCollection<Employee>(employees);
             }
+        }
+        public ICommand CmdSaveChanges
+        {
+            get
+            {
+                if(_cmdSaveChanges == null)
+                {
+                    _cmdSaveChanges = new RelayCommand(
+                        execute: _ =>
+                        {
+                            using IUnitOfWork uow = new UnitOfWork();
+                            _selectEmployee.FirstName = _firstname;
+                            _selectEmployee.LastName = _lastname;
+                            uow.EmployeeRepository.Update(_selectEmployee);
+                            uow.Save();
+
+                            LoadEmployees();
+                        },
+                        canExecute: _ => _selectEmployee != null);
+                        
+                }
+                return _cmdSaveChanges;
+            }
+            set { _cmdSaveChanges = value; }
         }
     }
 }
