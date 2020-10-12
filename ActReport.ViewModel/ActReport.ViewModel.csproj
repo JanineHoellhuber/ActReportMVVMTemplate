@@ -5,4 +5,9 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ActReport.Core\ActReport.Core.csproj" />
+    <ProjectReference Include="..\ActReport.Persistence\ActReport.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>
