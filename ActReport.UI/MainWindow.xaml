@@ -27,5 +27,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button Height="30" Grid.Row="4" Command="{Binding CmdNewEmployee}">Neuen Mitarbeiter speichern</Button>
     </Grid>
 </Window>

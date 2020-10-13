@@ -17,6 +17,7 @@ namespace ActReport.ViewModel
         private Employee _selectEmployee;
         private ObservableCollection<Employee> _employees;
         private ICommand _cmdSaveChanges;
+        private ICommand _cmdNewEmployee;
 
         public string FirstName
         {
@@ -98,6 +99,33 @@ namespace ActReport.ViewModel
                 return _cmdSaveChanges;
             }
             set { _cmdSaveChanges = value; }
+        }
+        public ICommand CmdNewEmployee
+        {
+            get
+            {
+                if (_cmdNewEmployee == null)
+                {
+                    _cmdNewEmployee = new RelayCommand(
+                        execute: _ =>
+                        {
+                            using IUnitOfWork uow = new UnitOfWork();
+                            Employee emp = new Employee
+                            {
+                                FirstName = _firstname,
+                                LastName = _lastname
+                            };
+                            uow.EmployeeRepository.Insert(emp);
+                            uow.Save();
+
+                            LoadEmployees();
+                        },
+                        canExecute: _ => _selectEmployee != null);
+
+                }
+                return _cmdNewEmployee;
+            }
+            set { _cmdNewEmployee = value; }
         }
     }
 }
