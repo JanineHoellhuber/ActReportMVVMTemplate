@@ -26,5 +26,7 @@ namespace ActReport.UI
             InitializeComponent();
             this.DataContext = new EmployeeViewModel();
         }
+
+      
     }
 }

@@ -65,7 +65,7 @@ namespace ActReport.ViewModel
 
         private void LoadEmployees()
         {
-            using (UnitOfWork uow = new UnitOfWork())
+            using (IUnitOfWork uow = new UnitOfWork())
             {
                 var employees = uow.EmployeeRepository
                     .Get(
@@ -120,7 +120,7 @@ namespace ActReport.ViewModel
 
                             LoadEmployees();
                         },
-                        canExecute: _ => _selectEmployee != null);
+                        canExecute: _ => _firstname != null);
 
                 }
                 return _cmdNewEmployee;

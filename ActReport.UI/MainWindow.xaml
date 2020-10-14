@@ -15,9 +15,9 @@
         <Button Height="30" Command="{Binding CmdSaveChanges}">Änderung speichern</Button>
         <UniformGrid Grid.Row="1" Rows="2" Columns="2">
             <TextBlock>Vorname:</TextBlock>
-            <TextBlock Text="{Binding FirstName}"></TextBlock>
+            <TextBox Text="{Binding FirstName}"></TextBox>
             <TextBlock>Nachname:</TextBlock>
-            <TextBlock Text="{Binding LastName}"></TextBlock>
+            <TextBox Text="{Binding LastName}"></TextBox>
         </UniformGrid>
         <ListView SelectedItem="{Binding SelectedEmployee}" Grid.Row="2" ItemsSource="{Binding Employees}">
             <ListView.View>
