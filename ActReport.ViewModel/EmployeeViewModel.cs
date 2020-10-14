@@ -102,12 +102,10 @@ namespace ActReport.ViewModel
                             };
                             uow.EmployeeRepository.Insert(emp);
                             uow.Save();
-
                             LoadEmployees();
                         },
-                        canExecute: _ => _selectedEmployee != null);
+                        canExecute: _ => _cmdNewEmployee != null);
                 }
-
                 return _cmdNewEmployee;
             }
             set
