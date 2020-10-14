@@ -12,41 +12,40 @@ namespace ActReport.ViewModel
 {
     public class EmployeeViewModel : BaseViewModel
     {
-        private string _firstname;
-        private string _lastname;
-        private Employee _selectEmployee;
+        private string _firstName;
+        private string _lastName;
+        private Employee _selectedEmployee;
         private ObservableCollection<Employee> _employees;
         private ICommand _cmdSaveChanges;
-        private ICommand _cmdNewEmployee;
 
         public string FirstName
         {
-            get => _firstname;
+            get => _firstName;
             set
             {
-                _firstname = value;
+                _firstName = value;
                 OnPropertyChanged(nameof(FirstName));
             }
         }
+
         public string LastName
         {
-            get => _lastname;
+            get => _lastName;
             set
             {
-                _lastname = value;
+                _lastName = value;
                 OnPropertyChanged(nameof(LastName));
             }
         }
-
-        public Employee SelectEmployee
+        public Employee SelectedEmployee
         {
-            get => _selectEmployee;
+            get => _selectedEmployee;
             set
             {
-                _selectEmployee = value;
-                FirstName = _selectEmployee?.FirstName;
-                LastName = _selectEmployee?.LastName;
-                OnPropertyChanged(nameof(SelectEmployee));
+                _selectedEmployee = value;
+                FirstName = _selectedEmployee?.FirstName;
+                LastName = _selectedEmployee?.LastName;
+                OnPropertyChanged(nameof(SelectedEmployee));
             }
         }
         public ObservableCollection<Employee> Employees
@@ -58,6 +57,34 @@ namespace ActReport.ViewModel
                 OnPropertyChanged(nameof(Employees));
             }
         }
+        public ICommand CmdSaveChanges
+        {
+            get
+            {
+                if (_cmdSaveChanges == null)
+                {
+                    _cmdSaveChanges = new RelayCommand(
+                        execute: _ =>
+                        {
+                            using UnitOfWork uow = new UnitOfWork();
+                            _selectedEmployee.FirstName = _firstName;
+                            _selectedEmployee.LastName = _lastName;
+                            uow.EmployeeRepository.Update(_selectedEmployee);
+                            uow.Save();
+
+                            LoadEmployees();
+                        },
+                        canExecute: _ => _selectedEmployee != null);
+                }
+
+                return _cmdSaveChanges;
+            }
+            set
+            {
+                _cmdSaveChanges = value;
+            }
+        }
+
         public EmployeeViewModel()
         {
             LoadEmployees();
@@ -65,7 +92,7 @@ namespace ActReport.ViewModel
 
         private void LoadEmployees()
         {
-            using (IUnitOfWork uow = new UnitOfWork())
+            using (UnitOfWork uow = new UnitOfWork())
             {
                 var employees = uow.EmployeeRepository
                     .Get(
@@ -75,57 +102,6 @@ namespace ActReport.ViewModel
 
                 Employees = new ObservableCollection<Employee>(employees);
             }
-        }
-        public ICommand CmdSaveChanges
-        {
-            get
-            {
-                if(_cmdSaveChanges == null)
-                {
-                    _cmdSaveChanges = new RelayCommand(
-                        execute: _ =>
-                        {
-                            using IUnitOfWork uow = new UnitOfWork();
-                            _selectEmployee.FirstName = _firstname;
-                            _selectEmployee.LastName = _lastname;
-                            uow.EmployeeRepository.Update(_selectEmployee);
-                            uow.Save();
-
-                            LoadEmployees();
-                        },
-                        canExecute: _ => _selectEmployee != null);
-                        
-                }
-                return _cmdSaveChanges;
-            }
-            set { _cmdSaveChanges = value; }
-        }
-        public ICommand CmdNewEmployee
-        {
-            get
-            {
-                if (_cmdNewEmployee == null)
-                {
-                    _cmdNewEmployee = new RelayCommand(
-                        execute: _ =>
-                        {
-                            using IUnitOfWork uow = new UnitOfWork();
-                            Employee emp = new Employee
-                            {
-                                FirstName = _firstname,
-                                LastName = _lastname
-                            };
-                            uow.EmployeeRepository.Insert(emp);
-                            uow.Save();
-
-                            LoadEmployees();
-                        },
-                        canExecute: _ => _firstname != null);
-
-                }
-                return _cmdNewEmployee;
-            }
-            set { _cmdNewEmployee = value; }
         }
     }
 }
