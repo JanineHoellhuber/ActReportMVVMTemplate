@@ -12,7 +12,7 @@
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <Button Height="30" Command="{Binding CmdSaveChanges}">Änderung speichern</Button>
+        <Button Height="30" Command="{Binding CmdSaveChanges, UpdateSourceTrigger=PropertyChanged}">Änderung speichern</Button>
         <UniformGrid Grid.Row="1" Rows="2" Columns="2">
             <TextBlock>Vorname:</TextBlock>
             <TextBox Text="{Binding FirstName}"></TextBox>
@@ -27,5 +27,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
+        <Button Height="30" Grid.Row="2"  Command="{Binding CmdNewEmployee}">Neuen Mitarbeiter hinzufügen</Button>
     </Grid>
 </Window>
