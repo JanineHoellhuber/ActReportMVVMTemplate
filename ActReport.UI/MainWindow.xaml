@@ -5,20 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ActReport.UI"
         mc:Ignorable="d"
-        Title="ActivityReport" Height="350" Width="525">
+        Title="ActivityReport" Height="400" Width="525">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <Button Height="30" Command="{Binding CmdSaveChanges}">Änderung speichern</Button>
+        <Button Height="30" Grid.Column="1" Command="{Binding CmdSaveChanges}">Änderung speichern</Button>
         <UniformGrid Grid.Row="1" Rows="2" Columns="2">
             <TextBlock>Vorname:</TextBlock>
             <TextBox Text="{Binding FirstName}"></TextBox>
             <TextBlock>Nachname:</TextBlock>
             <TextBox Text="{Binding LastName}"></TextBox>
         </UniformGrid>
+        <StackPanel Grid.Row="3">
+            <TextBlock>Bitte Name eingeben:</TextBlock>
+            <TextBox Height="20" Text="{Binding FilterText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+        </StackPanel>
         <ListView SelectedItem="{Binding SelectedEmployee}" Grid.Row="2" ItemsSource="{Binding Employees}">
             <ListView.View>
                 <GridView>
@@ -27,6 +33,7 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <Button Height="30" Grid.Row="2"  Command="{Binding CmdNewEmployee}">Neuen Mitarbeiter hinzufügen</Button>
+        <Button Height="30" Grid.Row="3"  Command="{Binding CmdNewEmployee}" Margin="0,122,0,0" VerticalAlignment="Top">Neuen Mitarbeiter hinzufügen</Button>
+       
     </Grid>
 </Window>

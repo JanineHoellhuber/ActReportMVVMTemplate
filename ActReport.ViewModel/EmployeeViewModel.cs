@@ -132,5 +132,20 @@ namespace ActReport.ViewModel
                 Employees = new ObservableCollection<Employee>(employees);
             }
         }
+        private string _filterText = "";
+        public string FilterText
+        {
+            get
+            {
+                return _filterText;
+            }
+
+            set
+            {
+                _filterText = value;
+                LoadEmployees();
+                
+            }
+        }
     }
 }
