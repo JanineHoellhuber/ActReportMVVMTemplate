@@ -126,7 +126,9 @@ namespace ActReport.ViewModel
                 var employees = uow.EmployeeRepository
                     .Get(
                         orderBy:
-                            coll => coll.OrderBy(employees => employees.LastName))
+                            coll => coll.OrderBy(employees => employees.LastName),
+                           filter: 
+                             filterByLastName => filterByLastName.LastName.StartsWith(FilterText))
                     .ToList();
 
                 Employees = new ObservableCollection<Employee>(employees);
