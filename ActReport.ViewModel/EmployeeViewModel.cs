@@ -100,15 +100,15 @@ namespace ActReport.ViewModel
                                 FirstName = _firstName,
                                 LastName = _lastName
                             };
-                            if (FirstName != null && LastName != null)
-                            {
+                          /*  if (FirstName != null && LastName != null)
+                            {*/
                                 uow.EmployeeRepository.Insert(emp);
                                 uow.Save();
                                 LoadEmployees();
-                            }
+                           // }
                             
                         },
-                        canExecute: _ => _cmdNewEmployee != null);
+                        canExecute: _ => _firstName?.Length >= 3 && _lastName?.Length >= 3);
                 }
                 return _cmdNewEmployee;
             }
